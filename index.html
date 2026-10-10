@@ -1,33 +1,36 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050807">
-<title>Pidi Panel | Simulator</title>
+<meta name="theme-color" content="#030605">
+<title>PIDI PANEL V2 | SAHIL</title>
 
 <style>
+:root {
+  --red: #ff173b;
+  --green: #19ff70;
+  --bg: #030605;
+  --text: #f2fff6;
+  --muted: #9aafa3;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-:root {
-  --red: #ff1838;
-  --green: #20ff72;
-  --bg: #050807;
-}
-
 body {
-  font-family: Arial, sans-serif;
-  color: white;
-  background:
-    radial-gradient(circle at top left, #350810, transparent 40%),
-    radial-gradient(circle at bottom right, #003d1b, transparent 45%),
-    var(--bg);
   min-height: 100vh;
   overflow-x: hidden;
+  background:
+    radial-gradient(ellipse at 0% 20%, #390711 0%, transparent 38%),
+    radial-gradient(ellipse at 100% 70%, #00391b 0%, transparent 40%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body::before {
@@ -35,30 +38,66 @@ body::before {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: repeating-linear-gradient(
-    transparent 0px,
-    transparent 3px,
-    #20ff7208 4px
-  );
+  opacity: .23;
+  background:
+    linear-gradient(#19ff700a 1px, transparent 1px),
+    linear-gradient(90deg, #19ff700a 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.scanline {
+  position: fixed;
+  z-index: 20;
+  left: 0;
+  top: -4px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), var(--red), transparent);
+  box-shadow: 0 0 15px var(--green);
+  animation: scan 8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes scan {
+  to { top: 100vh; }
+}
+
+@keyframes neon {
+  from { text-shadow: 0 0 5px #19ff7030; }
+  to { text-shadow: 0 0 22px #19ff70b0, 0 0 35px #ff173b50; }
+}
+
+@keyframes breathe {
+  50% { box-shadow: 0 0 25px #19ff7040, inset 0 0 20px #19ff7010; }
 }
 
 header {
-  padding: 22px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #20ff7250;
+  gap: 10px;
+  padding: 20px clamp(15px, 4vw, 45px);
+  border-bottom: 1px solid #19ff7040;
+  position: relative;
 }
 
 .logo {
-  font-size: 27px;
-  font-weight: 900;
+  font-size: clamp(22px, 5vw, 32px);
+  font-weight: 1000;
   font-style: italic;
-  text-shadow: 0 0 15px #ff183855;
+  letter-spacing: 1px;
 }
 
-.logo span {
-  color: var(--red);
+.logo span { color: var(--red); }
+
+.logo small {
+  display: block;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 5px;
+  font-style: normal;
+  color: var(--muted);
+  margin-top: 5px;
 }
 
 .online {
@@ -67,50 +106,57 @@ header {
   letter-spacing: 2px;
 }
 
+.container {
+  width: min(900px, 92%);
+  margin: auto;
+}
+
 .hero {
   text-align: center;
-  padding: 45px 12px 30px;
+  padding: 44px 5px 30px;
+}
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--muted);
 }
 
 .hero h1 {
-  font-size: clamp(42px, 10vw, 75px);
+  font-size: clamp(43px, 10vw, 83px);
   font-weight: 1000;
   font-style: italic;
-  animation: glow 2s infinite alternate;
+  letter-spacing: -2px;
+  margin: 12px 0;
+  animation: neon 2s infinite alternate;
 }
 
-.hero h1 span {
-  color: var(--red);
-}
+.hero h1 span { color: var(--red); }
 
 .hero p {
-  color: #9eafa5;
-  letter-spacing: 4px;
   font-size: 11px;
-  margin-top: 12px;
-}
-
-@keyframes glow {
-  from { text-shadow: 0 0 5px #20ff7230; }
-  to { text-shadow: 0 0 24px #20ff72a0; }
-}
-
-.container {
-  width: min(500px, 92%);
-  margin: 0 auto 30px;
+  letter-spacing: 4px;
+  color: #b4c8bb;
 }
 
 .card {
-  padding: 25px;
-  border: 1px solid #20ff7280;
+  padding: clamp(20px, 4vw, 32px);
+  border: 1px solid #19ff7070;
   border-radius: 15px;
-  background: #07100dec;
-  box-shadow: 0 0 24px #20ff7210;
+  background: linear-gradient(140deg, #08110dec, #030705f7);
+  box-shadow: 0 0 25px #19ff7010, inset 0 0 25px #19ff7008;
+  animation: breathe 5s ease-in-out infinite;
 }
 
-.card h2 {
+.login-card {
+  width: min(500px, 100%);
+  margin: 0 auto 35px;
+  border-color: #ff173b90;
+}
+
+.card-title {
+  font-size: 22px;
   text-align: center;
-  font-size: 21px;
   margin-bottom: 10px;
 }
 
@@ -120,277 +166,345 @@ header {
 .subtitle {
   text-align: center;
   font-size: 12px;
-  color: #9eafa5;
-  line-height: 1.6;
-  margin-bottom: 20px;
+  line-height: 1.8;
+  color: var(--muted);
+  margin-bottom: 22px;
 }
 
-input {
+.field {
   width: 100%;
   padding: 15px;
   margin-bottom: 14px;
   background: #030806;
   color: white;
-  border: 1px solid #385347;
+  border: 1px solid #40574b;
   border-radius: 8px;
+  font-size: 15px;
   outline: none;
 }
 
-input:focus {
+.field:focus {
   border-color: var(--green);
-  box-shadow: 0 0 12px #20ff7230;
+  box-shadow: 0 0 15px #19ff7030;
 }
 
 .btn {
   width: 100%;
-  border: none;
   padding: 15px;
+  border: 1px solid #8affb2;
   border-radius: 8px;
-  background: var(--green);
-  color: #001708;
+  background: linear-gradient(100deg, #0acb46, #24ff76);
+  color: #001507;
   font-size: 15px;
   font-weight: 900;
+  letter-spacing: 2px;
   cursor: pointer;
-  box-shadow: 0 0 18px #20ff7240;
+  box-shadow: 0 0 17px #19ff7040;
   transition: .2s;
 }
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 28px #20ff7280;
+  box-shadow: 0 0 28px #19ff7070;
 }
 
 .error {
-  color: var(--red);
+  color: #ff6579;
   font-size: 12px;
   text-align: center;
+  min-height: 17px;
   margin-top: 12px;
 }
 
-#panel {
-  display: none;
-}
+#panel { display: none; margin-bottom: 25px; }
 
-.panel-head {
+.panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 12px;
   flex-wrap: wrap;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #19ff7040;
+}
+
+.panel-header h2 {
+  font-size: clamp(22px, 5vw, 30px);
+  font-style: italic;
 }
 
 .badge {
-  font-size: 9px;
-  color: var(--red);
   border: 1px solid var(--red);
-  padding: 7px;
+  color: #ff8190;
   border-radius: 5px;
+  padding: 8px 10px;
+  font-size: 9px;
   letter-spacing: 1px;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 13px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .feature {
-  min-height: 112px;
-  padding: 16px 5px;
+  min-width: 0;
+  min-height: 125px;
+  padding: 17px 5px;
+  background: linear-gradient(145deg, #07331a, #030806);
   border: 1px solid var(--green);
   border-radius: 12px;
   color: white;
-  background: linear-gradient(145deg, #06351a, #030805);
   cursor: pointer;
-  box-shadow: 0 0 12px #20ff7230;
+  box-shadow: 0 0 14px #19ff7030, inset 0 0 15px #19ff7010;
   transition: .2s;
 }
 
 .feature:hover {
   transform: translateY(-3px);
-  box-shadow: 0 0 23px #20ff7270;
+  box-shadow: 0 0 25px #19ff7060;
 }
 
 .feature .icon {
-  font-size: 26px;
   display: block;
+  font-size: 29px;
   color: var(--green);
   margin-bottom: 12px;
 }
 
 .feature strong {
-  font-size: 12px;
+  display: block;
+  font-size: 11px;
   letter-spacing: 1px;
 }
 
 .status {
   display: block;
+  margin-top: 11px;
   color: var(--green);
-  margin-top: 10px;
   font-size: 10px;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
-.status::before {
-  content: "● ";
-}
+.status::before { content: "● "; }
 
 .feature.off {
-  border-color: #68746d;
+  background: #101612;
+  border-color: #64736a;
   box-shadow: none;
-  background: #111714;
 }
 
 .feature.off .icon,
 .feature.off .status {
-  color: #859189;
+  color: #89978e;
 }
 
-.info {
-  width: min(500px, 92%);
-  margin: 20px auto;
+.session-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #19ff7040;
+}
+
+.session-text {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 2;
+}
+
+.session-text b { color: var(--green); }
+
+.logout {
+  width: auto;
+  padding: 11px 16px;
+  font-size: 11px;
+}
+
+.notice {
+  margin: 22px 0;
   padding: 20px;
-  border: 1px solid #20ff7260;
+  border: 1px solid #19ff7060;
   border-radius: 12px;
-  background: #06100b;
-  line-height: 1.8;
+  background: #06100beF;
   font-size: 13px;
+  line-height: 1.9;
   overflow-wrap: anywhere;
 }
 
-.info a {
+.notice a {
   color: var(--green);
+  text-decoration: none;
 }
 
+.notice a:hover { text-decoration: underline; }
+
 .creator {
-  margin-top: 12px;
-  border-top: 1px solid #20ff7230;
-  padding-top: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #19ff7030;
+}
+
+.creator strong {
+  font-size: 17px;
+  color: var(--green);
 }
 
 footer {
   text-align: center;
-  padding: 25px 10px;
-  color: #9eafa5;
+  color: #8b9e91;
+  padding: 20px 10px 30px;
   font-size: 10px;
   letter-spacing: 3px;
 }
 
-.line {
+.footer-line {
+  width: 100%;
   height: 2px;
-  background: linear-gradient(
-    90deg, transparent, var(--red),
-    var(--green), transparent
-  );
-  margin-bottom: 22px;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, transparent, var(--red), var(--green), transparent);
+  box-shadow: 0 0 15px #19ff7050;
 }
 
-@media (min-width: 600px) {
-  .grid { grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 550px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero { padding-top: 35px; }
+  .online { font-size: 9px; letter-spacing: 1px; }
+  .feature { min-height: 115px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }
 </style>
 </head>
 
 <body>
+<div class="scanline"></div>
 
 <header>
-  <div class="logo">PIDI <span>PANEL</span></div>
-  <div class="online">● SYSTEM ONLINE</div>
+  <div class="logo">
+    PIDI <span>PANEL</span>
+    <small>SIMULATOR • V2</small>
+  </div>
+  <div class="online">● ONLINE</div>
 </header>
 
 <section class="hero">
+  <div class="eyebrow">WELCOME TO THE INTERFACE</div>
   <h1>PIDI <span>PANEL</span></h1>
-  <p>SIMULATOR • PLAY SMART • STAY SAFE</p>
+  <p>RED ENERGY • GREEN POWER</p>
 </section>
 
 <main class="container">
 
   <!-- LOGIN PAGE -->
-  <section class="card" id="loginPage">
-    <h2><span class="green">LOGIN</span> TO CONTINUE</h2>
+  <section class="card login-card" id="loginPage">
+    <h2 class="card-title">
+      <span class="green">LOGIN</span> TO CONTINUE
+    </h2>
+
     <p class="subtitle">
-      Enter your demo username and password
+      Enter your username and password
     </p>
 
     <form id="loginForm">
       <input
+        class="field"
         id="username"
         type="text"
-        placeholder="Enter Username"
+        placeholder="Username"
         autocomplete="username"
         required
       >
 
       <input
+        class="field"
         id="password"
         type="password"
-        placeholder="Enter Password"
+        placeholder="Password"
         autocomplete="current-password"
         required
       >
 
       <button class="btn" type="submit">
-        ➜ LOGIN
+        ➜ &nbsp; LOGIN
       </button>
 
-      <p class="error" id="error"></p>
+      <p class="error" id="error" aria-live="polite"></p>
     </form>
   </section>
 
-  <!-- SIMULATOR PANEL -->
+  <!-- MAIN PANEL -->
   <section class="card" id="panel">
 
-    <div class="panel-head">
-      <h2><span class="green">PIDI</span>
-        <span class="red">PANEL</span>
-      </h2>
-      <span class="badge">DEMO ONLY</span>
+    <div class="panel-header">
+      <div>
+        <h2>
+          <span class="green">PIDI</span>
+          <span class="red">PANEL</span>
+        </h2>
+        <p class="eyebrow" style="margin-top:8px">
+          CONTROL CENTER
+        </p>
+      </div>
+
+      <span class="badge">SIMULATION ONLY</span>
     </div>
 
     <p class="subtitle">
-      Simulator controls — webpage demo only
+      Tap any button to change its demo status.
+      These controls only affect this webpage.
     </p>
 
     <div class="grid">
 
-      <button class="feature" type="button">
+      <button class="feature" type="button" aria-pressed="true">
         <span class="icon">◎</span>
         <strong>AIMBOT</strong>
         <span class="status">ACTIVE</span>
       </button>
 
-      <button class="feature" type="button">
+      <button class="feature" type="button" aria-pressed="true">
         <span class="icon">⊙</span>
         <strong>AIM FOV</strong>
         <span class="status">ACTIVE</span>
       </button>
 
-      <button class="feature" type="button">
+      <button class="feature" type="button" aria-pressed="true">
         <span class="icon">⌖</span>
         <strong>SCOPE</strong>
         <span class="status">ACTIVE</span>
       </button>
 
-      <button class="feature" type="button">
+      <button class="feature" type="button" aria-pressed="true">
         <span class="icon">◉</span>
         <strong>WITHOUT SCOPE</strong>
         <span class="status">ACTIVE</span>
       </button>
 
-      <button class="feature" type="button">
+      <button class="feature" type="button" aria-pressed="true">
         <span class="icon">⬡</span>
         <strong>BYPASS</strong>
         <span class="status">ACTIVE</span>
       </button>
 
-      <button class="feature" type="button">
+      <button class="feature" type="button" aria-pressed="true">
         <span class="icon">⬢</span>
         <strong>ANTIBAN</strong>
         <span class="status">ACTIVE</span>
       </button>
 
-      <button class="feature" type="button">
+      <button class="feature" type="button" aria-pressed="true">
         <span class="icon">▤</span>
         <strong>SERVERS</strong>
         <span class="status">ACTIVE</span>
@@ -398,47 +512,57 @@ footer {
 
     </div>
 
-    <p class="subtitle" style="margin-top:20px">
-      SESSION: <span class="green" id="session">DEMO USER</span>
-    </p>
+    <div class="session-bar">
+      <div class="session-text">
+        SESSION: <b id="session">SAHIL</b><br>
+        MODE: <b>LOCAL DEMO</b>
+      </div>
 
-    <button class="btn" id="logout" type="button">
-      LOG OUT
-    </button>
+      <button class="btn logout" id="logout" type="button">
+        LOG OUT
+      </button>
+    </div>
 
   </section>
+
+  <!-- INSTAGRAM MESSAGE -->
+  <section class="notice">
+    <p>
+      Username aur password ke liye
+      <strong class="green">REHAN</strong> ko follow karo.
+    </p>
+
+    <p>
+      <a
+        href="https://instagram.com/deadshot____rehan?vrfl=anptNWZxanoxdHFu"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        ↗ FOLLOW REHAN ON INSTAGRAM
+      </a>
+    </p>
+
+    <div class="creator">
+      <span class="eyebrow">PANEL CREATOR</span><br>
+      <strong>@be.like_sahil</strong>
+    </div>
+  </section>
+
 </main>
 
-<!-- FOLLOW MESSAGE -->
-<section class="info">
-  <p>
-    Username aur password ke liye
-    <strong class="green">REHAN</strong> ko follow karo.
-  </p>
-
-  <p>
-    <a
-      href="https://instagram.com/deadshot____rehan?vrfl=anptNWZxanoxdHFu"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      ↗ FOLLOW REHAN ON INSTAGRAM
-    </a>
-  </p>
-
-  <div class="creator">
-    PANEL CREATOR<br>
-    <strong class="green">@be.like_sahil</strong>
-  </div>
-</section>
-
 <footer>
-  <div class="line"></div>
-  FREE FIRE INSPIRED SIMULATOR
+  <div class="footer-line"></div>
+  FREE FIRE INSPIRED • PIDI PANEL V2
 </footer>
 
 <script>
-// Demo login only: no real authentication.
+"use strict";
+
+// Fixed demo login.
+// Note: credentials inside frontend code are visible to visitors.
+const CORRECT_USERNAME = "Sahil";
+const CORRECT_PASSWORD = "pali";
+
 const loginForm = document.getElementById("loginForm");
 const loginPage = document.getElementById("loginPage");
 const panel = document.getElementById("panel");
@@ -449,48 +573,66 @@ loginForm.addEventListener("submit", function(event) {
 
   const username =
     document.getElementById("username").value.trim();
+
   const password =
     document.getElementById("password").value;
 
-  if (!username || !password) {
-    error.textContent = "Enter username and password.";
-    return;
+  if (
+    username === CORRECT_USERNAME &&
+    password === CORRECT_PASSWORD
+  ) {
+    error.textContent = "";
+    document.getElementById("session").textContent = "SAHIL";
+
+    loginPage.style.display = "none";
+    panel.style.display = "block";
+
+    panel.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  } else {
+    error.textContent = "Wrong username or password!";
   }
-
-  error.textContent = "";
-  document.getElementById("session").textContent =
-    username.toUpperCase();
-
-  loginPage.style.display = "none";
-  panel.style.display = "block";
-  panel.scrollIntoView({ behavior: "smooth" });
 });
 
-// Buttons toggle visual demo status only.
-document.querySelectorAll(".feature").forEach(button => {
+// Interactive visual toggles only.
+// These buttons do not control or modify Free Fire.
+document.querySelectorAll(".feature").forEach(function(button) {
   button.addEventListener("click", function() {
-    this.classList.toggle("off");
+    const isCurrentlyActive =
+      this.getAttribute("aria-pressed") === "true";
 
-    const status = this.querySelector(".status");
-    const isOff = this.classList.contains("off");
+    const newActiveState = !isCurrentlyActive;
 
-    status.textContent = isOff ? "OFF" : "ACTIVE";
+    this.setAttribute("aria-pressed", String(newActiveState));
+    this.classList.toggle("off", !newActiveState);
+
+    this.querySelector(".status").textContent =
+      newActiveState ? "ACTIVE" : "OFF";
   });
 });
 
-// Log out
-document.getElementById("logout").addEventListener("click", () => {
+// Logout and reset demo buttons.
+document.getElementById("logout").addEventListener("click", function() {
   panel.style.display = "none";
   loginPage.style.display = "block";
   loginForm.reset();
 
-  document.querySelectorAll(".feature").forEach(button => {
+  error.textContent = "";
+
+  document.querySelectorAll(".feature").forEach(function(button) {
     button.classList.remove("off");
+    button.setAttribute("aria-pressed", "true");
     button.querySelector(".status").textContent = "ACTIVE";
   });
 
-  document.getElementById("session").textContent = "DEMO USER";
-  loginPage.scrollIntoView({ behavior: "smooth" });
+  document.getElementById("session").textContent = "SAHIL";
+
+  loginPage.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
 });
 </script>
 
