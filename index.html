@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050807">
+<title>Pidi Panel | Simulator</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --red: #ff1838;
+  --green: #20ff72;
+  --bg: #050807;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: white;
+  background:
+    radial-gradient(circle at top left, #350810, transparent 40%),
+    radial-gradient(circle at bottom right, #003d1b, transparent 45%),
+    var(--bg);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    transparent 0px,
+    transparent 3px,
+    #20ff7208 4px
+  );
+}
+
+header {
+  padding: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #20ff7250;
+}
+
+.logo {
+  font-size: 27px;
+  font-weight: 900;
+  font-style: italic;
+  text-shadow: 0 0 15px #ff183855;
+}
+
+.logo span {
+  color: var(--red);
+}
+
+.online {
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 2px;
+}
+
+.hero {
+  text-align: center;
+  padding: 45px 12px 30px;
+}
+
+.hero h1 {
+  font-size: clamp(42px, 10vw, 75px);
+  font-weight: 1000;
+  font-style: italic;
+  animation: glow 2s infinite alternate;
+}
+
+.hero h1 span {
+  color: var(--red);
+}
+
+.hero p {
+  color: #9eafa5;
+  letter-spacing: 4px;
+  font-size: 11px;
+  margin-top: 12px;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 5px #20ff7230; }
+  to { text-shadow: 0 0 24px #20ff72a0; }
+}
+
+.container {
+  width: min(500px, 92%);
+  margin: 0 auto 30px;
+}
+
+.card {
+  padding: 25px;
+  border: 1px solid #20ff7280;
+  border-radius: 15px;
+  background: #07100dec;
+  box-shadow: 0 0 24px #20ff7210;
+}
+
+.card h2 {
+  text-align: center;
+  font-size: 21px;
+  margin-bottom: 10px;
+}
+
+.green { color: var(--green); }
+.red { color: var(--red); }
+
+.subtitle {
+  text-align: center;
+  font-size: 12px;
+  color: #9eafa5;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 14px;
+  background: #030806;
+  color: white;
+  border: 1px solid #385347;
+  border-radius: 8px;
+  outline: none;
+}
+
+input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 12px #20ff7230;
+}
+
+.btn {
+  width: 100%;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  background: var(--green);
+  color: #001708;
+  font-size: 15px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 0 18px #20ff7240;
+  transition: .2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 28px #20ff7280;
+}
+
+.error {
+  color: var(--red);
+  font-size: 12px;
+  text-align: center;
+  margin-top: 12px;
+}
+
+#panel {
+  display: none;
+}
+
+.panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 9px;
+  color: var(--red);
+  border: 1px solid var(--red);
+  padding: 7px;
+  border-radius: 5px;
+  letter-spacing: 1px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 13px;
+}
+
+.feature {
+  min-height: 112px;
+  padding: 16px 5px;
+  border: 1px solid var(--green);
+  border-radius: 12px;
+  color: white;
+  background: linear-gradient(145deg, #06351a, #030805);
+  cursor: pointer;
+  box-shadow: 0 0 12px #20ff7230;
+  transition: .2s;
+}
+
+.feature:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 23px #20ff7270;
+}
+
+.feature .icon {
+  font-size: 26px;
+  display: block;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+
+.feature strong {
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.status {
+  display: block;
+  color: var(--green);
+  margin-top: 10px;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.status::before {
+  content: "● ";
+}
+
+.feature.off {
+  border-color: #68746d;
+  box-shadow: none;
+  background: #111714;
+}
+
+.feature.off .icon,
+.feature.off .status {
+  color: #859189;
+}
+
+.info {
+  width: min(500px, 92%);
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #20ff7260;
+  border-radius: 12px;
+  background: #06100b;
+  line-height: 1.8;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.info a {
+  color: var(--green);
+}
+
+.creator {
+  margin-top: 12px;
+  border-top: 1px solid #20ff7230;
+  padding-top: 12px;
+}
+
+footer {
+  text-align: center;
+  padding: 25px 10px;
+  color: #9eafa5;
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+.line {
+  height: 2px;
+  background: linear-gradient(
+    90deg, transparent, var(--red),
+    var(--green), transparent
+  );
+  margin-bottom: 22px;
+}
+
+@media (min-width: 600px) {
+  .grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">PIDI <span>PANEL</span></div>
+  <div class="online">● SYSTEM ONLINE</div>
+</header>
+
+<section class="hero">
+  <h1>PIDI <span>PANEL</span></h1>
+  <p>SIMULATOR • PLAY SMART • STAY SAFE</p>
+</section>
+
+<main class="container">
+
+  <!-- LOGIN PAGE -->
+  <section class="card" id="loginPage">
+    <h2><span class="green">LOGIN</span> TO CONTINUE</h2>
+    <p class="subtitle">
+      Enter your demo username and password
+    </p>
+
+    <form id="loginForm">
+      <input
+        id="username"
+        type="text"
+        placeholder="Enter Username"
+        autocomplete="username"
+        required
+      >
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Enter Password"
+        autocomplete="current-password"
+        required
+      >
+
+      <button class="btn" type="submit">
+        ➜ LOGIN
+      </button>
+
+      <p class="error" id="error"></p>
+    </form>
+  </section>
+
+  <!-- SIMULATOR PANEL -->
+  <section class="card" id="panel">
+
+    <div class="panel-head">
+      <h2><span class="green">PIDI</span>
+        <span class="red">PANEL</span>
+      </h2>
+      <span class="badge">DEMO ONLY</span>
+    </div>
+
+    <p class="subtitle">
+      Simulator controls — webpage demo only
+    </p>
+
+    <div class="grid">
+
+      <button class="feature" type="button">
+        <span class="icon">◎</span>
+        <strong>AIMBOT</strong>
+        <span class="status">ACTIVE</span>
+      </button>
+
+      <button class="feature" type="button">
+        <span class="icon">⊙</span>
+        <strong>AIM FOV</strong>
+        <span class="status">ACTIVE</span>
+      </button>
+
+      <button class="feature" type="button">
+        <span class="icon">⌖</span>
+        <strong>SCOPE</strong>
+        <span class="status">ACTIVE</span>
+      </button>
+
+      <button class="feature" type="button">
+        <span class="icon">◉</span>
+        <strong>WITHOUT SCOPE</strong>
+        <span class="status">ACTIVE</span>
+      </button>
+
+      <button class="feature" type="button">
+        <span class="icon">⬡</span>
+        <strong>BYPASS</strong>
+        <span class="status">ACTIVE</span>
+      </button>
+
+      <button class="feature" type="button">
+        <span class="icon">⬢</span>
+        <strong>ANTIBAN</strong>
+        <span class="status">ACTIVE</span>
+      </button>
+
+      <button class="feature" type="button">
+        <span class="icon">▤</span>
+        <strong>SERVERS</strong>
+        <span class="status">ACTIVE</span>
+      </button>
+
+    </div>
+
+    <p class="subtitle" style="margin-top:20px">
+      SESSION: <span class="green" id="session">DEMO USER</span>
+    </p>
+
+    <button class="btn" id="logout" type="button">
+      LOG OUT
+    </button>
+
+  </section>
+</main>
+
+<!-- FOLLOW MESSAGE -->
+<section class="info">
+  <p>
+    Username aur password ke liye
+    <strong class="green">REHAN</strong> ko follow karo.
+  </p>
+
+  <p>
+    <a
+      href="https://instagram.com/deadshot____rehan?vrfl=anptNWZxanoxdHFu"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      ↗ FOLLOW REHAN ON INSTAGRAM
+    </a>
+  </p>
+
+  <div class="creator">
+    PANEL CREATOR<br>
+    <strong class="green">@be.like_sahil</strong>
+  </div>
+</section>
+
+<footer>
+  <div class="line"></div>
+  FREE FIRE INSPIRED SIMULATOR
+</footer>
+
+<script>
+// Demo login only: no real authentication.
+const loginForm = document.getElementById("loginForm");
+const loginPage = document.getElementById("loginPage");
+const panel = document.getElementById("panel");
+const error = document.getElementById("error");
+
+loginForm.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const username =
+    document.getElementById("username").value.trim();
+  const password =
+    document.getElementById("password").value;
+
+  if (!username || !password) {
+    error.textContent = "Enter username and password.";
+    return;
+  }
+
+  error.textContent = "";
+  document.getElementById("session").textContent =
+    username.toUpperCase();
+
+  loginPage.style.display = "none";
+  panel.style.display = "block";
+  panel.scrollIntoView({ behavior: "smooth" });
+});
+
+// Buttons toggle visual demo status only.
+document.querySelectorAll(".feature").forEach(button => {
+  button.addEventListener("click", function() {
+    this.classList.toggle("off");
+
+    const status = this.querySelector(".status");
+    const isOff = this.classList.contains("off");
+
+    status.textContent = isOff ? "OFF" : "ACTIVE";
+  });
+});
+
+// Log out
+document.getElementById("logout").addEventListener("click", () => {
+  panel.style.display = "none";
+  loginPage.style.display = "block";
+  loginForm.reset();
+
+  document.querySelectorAll(".feature").forEach(button => {
+    button.classList.remove("off");
+    button.querySelector(".status").textContent = "ACTIVE";
+  });
+
+  document.getElementById("session").textContent = "DEMO USER";
+  loginPage.scrollIntoView({ behavior: "smooth" });
+});
+</script>
+
+</body>
+</html>
